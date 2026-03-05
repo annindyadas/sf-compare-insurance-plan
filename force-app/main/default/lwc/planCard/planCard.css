@@ -1,0 +1,149 @@
+/* ===================================================================
+   planCard – Individual Plan Input Card Styles
+   =================================================================== */
+
+:host {
+    display: block;
+}
+
+.plan-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.plan-card:hover {
+    border-color: #d8d8d8;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* ---------- Card Header ---------- */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1.25rem;
+    background: #f8f9fb;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.plan-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: #0176d3;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.plan-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #181818;
+    margin: 0;
+}
+
+.remove-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    --sds-c-icon-color-foreground-default: #706e6b;
+}
+
+.remove-btn:hover {
+    background: #fde4e1;
+    --sds-c-icon-color-foreground-default: #c23934;
+}
+
+/* ---------- Card Body ---------- */
+.card-body {
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.field-group {
+    flex: 1;
+    min-width: 0;
+}
+
+.field-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.field-row.two-col .field-group {
+    flex: 1;
+}
+
+.field-row.single-col {
+    max-width: 50%;
+}
+
+/* ---------- HDHP Toggle ---------- */
+.hdhp-toggle {
+    padding: 0.25rem 0;
+}
+
+/* ---------- Tax-Advantaged Section ---------- */
+.accounts-section {
+    margin-top: 0.25rem;
+}
+
+.section-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.section-divider::before,
+.section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e5e5e5;
+}
+
+.section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #706e6b;
+    white-space: nowrap;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+    .field-row.two-col {
+        flex-direction: column;
+    }
+    .field-row.single-col {
+        max-width: 100%;
+    }
+    .card-body {
+        padding: 1rem;
+    }
+}

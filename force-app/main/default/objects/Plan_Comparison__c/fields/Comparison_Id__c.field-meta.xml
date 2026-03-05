@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Comparison_Id__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>Unique 6-character alphanumeric code for retrieval.</description>
+    <externalId>true</externalId>
+    <label>Comparison Id</label>
+    <length>10</length>
+    <required>true</required>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

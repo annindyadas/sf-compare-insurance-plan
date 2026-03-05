@@ -1,0 +1,177 @@
+/* ===================================================================
+   planAdvancedCard – Advanced Plan Input Card Styles
+   =================================================================== */
+
+:host {
+    display: block;
+}
+
+.plan-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.plan-card:hover {
+    border-color: #d8d8d8;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* ---------- Card Header ---------- */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1.25rem;
+    background: #f8f9fb;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.plan-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: #0176d3;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.plan-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #181818;
+    margin: 0;
+}
+
+.remove-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    --sds-c-icon-color-foreground-default: #706e6b;
+}
+
+.remove-btn:hover {
+    background: #fde4e1;
+    --sds-c-icon-color-foreground-default: #c23934;
+}
+
+/* ---------- Card Body ---------- */
+.card-body {
+    padding: 0.875rem 1.125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field-group {
+    flex: 1;
+    min-width: 0;
+}
+
+.field-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.field-row.two-col .field-group {
+    flex: 1;
+}
+
+.field-row.single-col {
+    max-width: 50%;
+}
+
+/* ---------- HDHP Toggle ---------- */
+.hdhp-toggle {
+    padding: 0.25rem 0;
+}
+
+/* ---------- Collapsible Sections ---------- */
+.collapsible-section {
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 0.25rem;
+}
+
+.section-header-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem 0.875rem;
+    border: none;
+    background: #f8f9fb;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    text-align: left;
+}
+
+.section-header-btn:hover {
+    background: #eef1f6;
+}
+
+.section-chevron {
+    --sds-c-icon-color-foreground-default: #706e6b;
+    flex-shrink: 0;
+}
+
+.section-header-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #3e3e3c;
+}
+
+.section-content {
+    padding: 0.625rem 0.875rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-top: 1px solid #e5e5e5;
+}
+
+/* ---------- Section Hint ---------- */
+.section-hint {
+    margin: 0;
+    font-size: 0.76rem;
+    color: #706e6b;
+    line-height: 1.45;
+    padding: 0.35rem 0.5rem;
+    background: #f4f6f9;
+    border-radius: 6px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+    .field-row.two-col {
+        flex-direction: column;
+    }
+    .field-row.single-col {
+        max-width: 100%;
+    }
+    .card-body {
+        padding: 1rem;
+    }
+}

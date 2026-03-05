@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Stores a single plan's input data within a saved comparison session.</description>
+    <label>Plan Detail</label>
+    <nameField>
+        <label>Plan Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Plan Details</pluralLabel>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>

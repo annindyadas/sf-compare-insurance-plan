@@ -1,0 +1,163 @@
+<template>
+    <div class="basic-compare">
+
+        <!-- Global Settings Bar -->
+        <div class="settings-bar">
+            <div class="settings-inner">
+                <div class="settings-field tax-field">
+                    <lightning-input
+                        type="number"
+                        data-id="taxBracket"
+                        label="Federal Tax Bracket (%)"
+                        value={taxBracket}
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        placeholder="e.g. 22"
+                        onchange={handleTaxBracketChange}
+                        field-level-help="Optional. Your marginal federal income tax rate. Common brackets: 10, 12, 22, 24, 32, 35, 37%. Used to calculate tax savings from HSA/FSA/LP-FSA contributions."
+                        message-when-range-overflow="Must be 100 or less"
+                        message-when-range-underflow="Must be 0 or more">
+                    </lightning-input>
+                </div>
+                <div class="settings-field freq-field">
+                    <lightning-combobox
+                        name="premiumFrequency"
+                        label="Premium Frequency"
+                        value={premiumFrequency}
+                        options={premiumFrequencyOptions}
+                        onchange={handleFrequencyChange}
+                        field-level-help="How often your premium is deducted. Monthly = 12 payments/year, Bi-Weekly = 26 payments/year.">
+                    </lightning-combobox>
+                </div>
+            </div>
+        </div>
+
+        <!-- Validation Errors -->
+        <template lwc:if={hasValidationErrors}>
+            <div class="validation-banner" role="alert">
+                <lightning-icon icon-name="utility:error" size="x-small"
+                                variant="error" class="error-icon"></lightning-icon>
+                <div class="error-list">
+                    <template for:each={validationErrors} for:item="error">
+                        <p key={error} class="error-item">{error}</p>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <!-- Plan Cards – Horizontal Scroll -->
+        <div class={scrollContainerClass}>
+            <div class="plans-scroll" onscroll={handleCardsScroll}>
+                <template for:each={plansWithMeta} for:item="plan">
+                    <div key={plan.key} class="plan-card-wrapper">
+                        <c-plan-card
+                            plan-data={plan}
+                            plan-index={plan.index}
+                            can-remove={plan.canRemove}
+                            premium-label={premiumLabel}
+                            onplanchange={handlePlanChange}
+                            onremoveplan={handleRemovePlan}>
+                        </c-plan-card>
+                    </div>
+                </template>
+
+                <!-- Add Plan Button -->
+                <template lwc:if={canAddPlan}>
+                    <div class="add-plan-card" role="button" tabindex="0"
+                         title={addPlanTooltip}
+                         onclick={handleAddPlan}
+                         onkeydown={handleAddPlan}>
+                        <div class="add-plan-inner">
+                            <lightning-icon icon-name="utility:add" size="large"
+                                            class="add-icon"></lightning-icon>
+                            <span class="add-label">Add Plan</span>
+                            <span class="add-sublabel">{planCount} of 5</span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <template lwc:if={showScrollHint}>
+                <div class="scroll-indicator">
+                    <span class="scroll-hint">
+                        <lightning-icon icon-name="utility:chevronleft" size="xx-small" class="scroll-hint-icon"></lightning-icon>
+                        Scroll to see all plans
+                        <lightning-icon icon-name="utility:chevronright" size="xx-small" class="scroll-hint-icon"></lightning-icon>
+                    </span>
+                </div>
+            </template>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-bar">
+            <lightning-button
+                label="Reset"
+                variant="neutral"
+                icon-name="utility:refresh"
+                onclick={handleReset}
+                class="action-btn">
+            </lightning-button>
+            <lightning-button
+                label={saveButtonLabel}
+                variant="neutral"
+                icon-name="utility:save"
+                onclick={handleSave}
+                disabled={isSaving}
+                class="action-btn">
+            </lightning-button>
+            <lightning-button
+                label={compareButtonLabel}
+                variant="brand"
+                icon-name="utility:chart"
+                onclick={handleCompare}
+                disabled={cannotCompare}
+                class="action-btn">
+            </lightning-button>
+        </div>
+
+        <!-- Results -->
+        <template lwc:if={showResults}>
+            <c-plan-comparison-results results={results}></c-plan-comparison-results>
+        </template>
+
+        <!-- Save Success Modal -->
+        <template lwc:if={showSaveModal}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open save-modal">
+                <div class="slds-modal__container">
+                    <div class="modal-content">
+                        <div class="modal-header-custom">
+                            <lightning-icon icon-name="utility:success" size="medium" variant="success" class="modal-success-icon"></lightning-icon>
+                            <h2 class="modal-title">{saveModalTitle}</h2>
+                        </div>
+                        <div class="modal-body-custom">
+                            <p class="modal-instruction">Use this ID to retrieve your comparison later:</p>
+                            <div class="modal-id-display">
+                                <span class="modal-id-value">{savedComparisonId}</span>
+                                <lightning-button-icon
+                                    icon-name="utility:copy"
+                                    alternative-text="Copy ID"
+                                    title="Copy to clipboard"
+                                    onclick={handleCopyId}
+                                    class="modal-copy-btn">
+                                </lightning-button-icon>
+                                <template lwc:if={copyToastVisible}>
+                                    <span class="copy-toast">✓ Copied!</span>
+                                </template>
+                            </div>
+                            <p class="modal-note">Save this ID somewhere safe — you'll need it to reload your comparison.</p>
+                        </div>
+                        <div class="modal-footer-custom">
+                            <lightning-button
+                                label="Done"
+                                variant="brand"
+                                onclick={handleCloseSaveModal}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+    </div>
+</template>

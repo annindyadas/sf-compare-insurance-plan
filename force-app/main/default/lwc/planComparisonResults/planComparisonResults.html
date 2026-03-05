@@ -1,0 +1,143 @@
+<template>
+    <template lwc:if={hasResults}>
+        <div class="results-container">
+
+            <!-- Section Header -->
+            <div class="results-header">
+                <lightning-icon icon-name="utility:chart" size="small" class="results-header-icon"></lightning-icon>
+                <h2 class="results-title">Comparison Results</h2>
+            </div>
+
+            <!-- Winner Summary Banner -->
+            <template lwc:if={hasSavings}>
+                <div class="winner-banner">
+                    <div class="winner-content">
+                        <span class="winner-trophy">🏆</span>
+                        <div class="winner-text">
+                            <p class="winner-headline">
+                                <strong>{cheapestPlanName}</strong> is the most cost-effective plan!
+                            </p>
+                            <p class="winner-detail">
+                                You could save <strong>{formattedSavings}</strong> per year compared to the next best option.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Result Cards -->
+            <div class="results-grid">
+                <template for:each={planResults} for:item="plan">
+                    <div key={plan.planId} class={plan.cardClass}>
+
+                        <!-- Rank Badge -->
+                        <div class={plan.badgeClass}>
+                            {plan.badgeLabel}
+                        </div>
+
+                        <!-- Plan Name & Type -->
+                        <div class="result-plan-header">
+                            <h3 class="result-plan-name">{plan.planName}</h3>
+                            <span class={plan.hdhpClass}>{plan.hdhpLabel}</span>
+                        </div>
+
+                        <!-- Big Number: Effective Annual Cost -->
+                        <div class="big-number-section">
+                            <span class="big-number-label">Effective Annual Cost</span>
+                            <span class="big-number">{plan.formattedEffectiveCost}</span>
+                        </div>
+
+                        <!-- Cost Breakdown -->
+                        <div class="breakdown-section">
+                            <div class="breakdown-row">
+                                <span class="breakdown-label">{plan.premiumPeriodLabel}</span>
+                                <span class="breakdown-value">{plan.formattedPremiumPerPeriod}</span>
+                            </div>
+                            <div class="breakdown-row">
+                                <span class="breakdown-label">{plan.annualPremiumLabel}</span>
+                                <span class="breakdown-value">{plan.formattedAnnualPremium}</span>
+                            </div>
+                            <div class="breakdown-row">
+                                <span class="breakdown-label">Out-of-Pocket Maximum</span>
+                                <span class="breakdown-value">{plan.formattedOopm}</span>
+                            </div>
+                            <div class="breakdown-row effective-row">
+                                <span class="breakdown-label">Effective Annual Cost</span>
+                                <span class="breakdown-value">{plan.formattedEffectiveCost}</span>
+                            </div>
+
+                            <!-- Cost Offset Analysis -->
+                            <template lwc:if={plan.hasOffsetData}>
+                                <div class="offset-divider">
+                                    <span class="offset-divider-label">Cost Offset Analysis</span>
+                                </div>
+
+                                <div class="breakdown-row offset-row offset-start-row">
+                                    <span class="breakdown-label">Effective Annual Cost</span>
+                                    <span class="breakdown-value">{plan.formattedEffectiveCost}</span>
+                                </div>
+                                <template lwc:if={plan.showHsaApplied}>
+                                    <div class="breakdown-row offset-row">
+                                        <span class="breakdown-label">HSA Funds Applied</span>
+                                        <span class="breakdown-value offset-applied">{plan.formattedNegHsaApplied}</span>
+                                    </div>
+                                </template>
+                                <template lwc:if={plan.hasEmployerHsa}>
+                                    <div class="breakdown-row highlight-row employer-row">
+                                        <span class="breakdown-label">Employer HSA (free money)</span>
+                                        <span class="breakdown-value savings-value">{plan.formattedNegEmployerHsa}</span>
+                                    </div>
+                                </template>
+                                <template lwc:if={plan.showLpfsaApplied}>
+                                    <div class="breakdown-row offset-row">
+                                        <span class="breakdown-label">LP-FSA Funds Applied</span>
+                                        <span class="breakdown-value offset-applied">{plan.formattedNegLpfsaApplied}</span>
+                                    </div>
+                                </template>
+                                <template lwc:if={plan.showFsaApplied}>
+                                    <div class="breakdown-row offset-row">
+                                        <span class="breakdown-label">FSA Funds Applied</span>
+                                        <span class="breakdown-value offset-applied">{plan.formattedNegFsaApplied}</span>
+                                    </div>
+                                </template>
+                                <template lwc:if={plan.hasTaxSavings}>
+                                    <div class="breakdown-row highlight-row">
+                                        <span class="breakdown-label">{plan.taxSavingsLabel}</span>
+                                        <span class="breakdown-value savings-value">{plan.formattedNegTaxSavings}</span>
+                                    </div>
+                                </template>
+
+                                <!-- Net Annual Cost -->
+                                <div class={plan.netCostClass}>
+                                    <span class="net-cost-label">Net Annual Cost</span>
+                                    <span class="net-cost-value">{plan.formattedNetAnnualCost}</span>
+                                    <template lwc:if={plan.isNegativeNet}>
+                                        <span class="net-negative-help">
+                                            💡 A negative value means your offsets exceed the worst-case cost — you have leftover funds in your tax-advantaged accounts.
+                                        </span>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+
+                    </div>
+                </template>
+            </div>
+
+            <!-- Explanation -->
+            <div class="methodology-note">
+                <lightning-icon icon-name="utility:info" size="xx-small" class="method-icon"></lightning-icon>
+                <p class="method-text">
+                    <strong>How this is calculated:</strong><br/>
+                    <strong>Effective Annual Cost</strong> = Annual Premium + Out-of-Pocket Maximum (worst-case scenario).<br/>
+                    <strong>Cost Offset Analysis</strong> shows all savings that reduce the worst-case cost:<br/>
+                    &bull; <strong>HSA / LP-FSA / FSA Funds</strong> = your full contributions that offset medical costs.<br/>
+                    &bull; <strong>Employer HSA</strong> = free money from your employer.<br/>
+                    &bull; <strong>Tax Savings</strong> = (Your HSA + LP-FSA or FSA contributions) &times; tax bracket %.<br/>
+                    <strong>Net Annual Cost</strong> = Effective Annual Cost &minus; all offsets. A negative value means you have leftover funds in your accounts. Plans are ranked by Net Annual Cost.
+                </p>
+            </div>
+
+        </div>
+    </template>
+</template>

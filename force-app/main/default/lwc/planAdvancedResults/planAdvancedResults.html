@@ -1,0 +1,218 @@
+<template>
+    <template lwc:if={hasResults}>
+        <div class="results-container">
+
+            <!-- Section Header -->
+            <div class="results-header">
+                <lightning-icon icon-name="utility:chart" size="small" class="results-header-icon"></lightning-icon>
+                <h2 class="results-title">Advanced Comparison Results</h2>
+            </div>
+
+            <!-- Winner Banner -->
+            <template lwc:if={hasSavings}>
+                <div class="winner-banner">
+                    <div class="winner-content">
+                        <span class="winner-trophy">🏆</span>
+                        <div class="winner-text">
+                            <p class="winner-headline">
+                                <strong>{cheapestPlanName}</strong> is the most cost-effective plan!
+                            </p>
+                            <p class="winner-detail">
+                                You could save <strong>{formattedSavings}</strong> per year compared to the next best option.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Result Cards -->
+            <div class="results-grid">
+                <template for:each={planResults} for:item="plan">
+                    <div key={plan.planId} class={plan.cardClass}>
+
+                        <!-- Rank Badge -->
+                        <div class={plan.badgeClass}>{plan.badgeLabel}</div>
+
+                        <!-- Plan Name & Type -->
+                        <div class="result-plan-header">
+                            <h3 class="result-plan-name">{plan.planName}</h3>
+                            <span class={plan.hdhpClass}>{plan.hdhpLabel}</span>
+                        </div>
+
+                        <!-- Big Number: Total Annual Cost -->
+                        <div class="big-number-section">
+                            <span class="big-number-label">Total Annual Cost</span>
+                            <span class="big-number">{plan.formattedTotalAnnualCost}</span>
+                        </div>
+
+                        <!-- Cost Breakdown -->
+                        <div class="breakdown-section">
+
+                            <!-- Premium -->
+                            <div class="breakdown-row">
+                                <span class="breakdown-label">{plan.premiumPeriodLabel}</span>
+                                <span class="breakdown-value">{plan.formattedPremiumPerPeriod}</span>
+                            </div>
+                            <div class="breakdown-row">
+                                <span class="breakdown-label">{plan.annualPremiumLabel}</span>
+                                <span class="breakdown-value">{plan.formattedAnnualPremium}</span>
+                            </div>
+
+                            <!-- Plan Limits -->
+                            <div class="sub-divider">
+                                <span class="sub-divider-label">Plan Limits</span>
+                            </div>
+                            <div class="breakdown-row plan-limits-row">
+                                <span class="breakdown-label">{plan.deductibleLabel}</span>
+                                <span class="breakdown-value">{plan.formattedDeductible}</span>
+                            </div>
+                            <div class="breakdown-row plan-limits-row">
+                                <span class="breakdown-label">{plan.oopmLabel}</span>
+                                <span class="breakdown-value">{plan.formattedOopmUsed}</span>
+                            </div>
+
+                            <!-- Estimated Usage Costs -->
+                            <div class="sub-divider">
+                                <span class="sub-divider-label">Out-of-Pocket Cost Buildup</span>
+                            </div>
+
+                            <template lwc:if={plan.hasMedicalCopays}>
+                                <div class="breakdown-row">
+                                    <span class="breakdown-label">Medical Copays</span>
+                                    <span class="breakdown-value">{plan.formattedMedicalCopays}</span>
+                                </div>
+                            </template>
+                            <template lwc:if={plan.hasRxDeductible}>
+                                <div class="breakdown-row">
+                                    <span class="breakdown-label">Rx Deductible</span>
+                                    <span class="breakdown-value">{plan.formattedRxDeductible}</span>
+                                </div>
+                            </template>
+                            <template lwc:if={plan.hasRxCopays}>
+                                <div class="breakdown-row">
+                                    <span class="breakdown-label">Rx Copays (after Rx deductible)</span>
+                                    <span class="breakdown-value">{plan.formattedRxCopays}</span>
+                                </div>
+                            </template>
+
+                            <div class="breakdown-row subtotal-row">
+                                <span class="breakdown-label">Running OOP Total</span>
+                                <span class="breakdown-value">{plan.formattedRunningOOP}</span>
+                            </div>
+
+                            <!-- Deductible & Coinsurance -->
+                            <template lwc:if={plan.deductibleMetLabel}>
+                                <div class="breakdown-row deductible-met-row">
+                                    <span class="breakdown-label">{plan.deductibleMetLabel}</span>
+                                    <span class="breakdown-value">{plan.formattedDeductibleApplied}</span>
+                                </div>
+                            </template>
+                            <template lwc:if={plan.hasCoinsurance}>
+                                <div class="breakdown-row">
+                                    <span class="breakdown-label">{plan.coinsuranceLabel}</span>
+                                    <span class="breakdown-value">{plan.formattedCoinsuranceCost}</span>
+                                </div>
+                            </template>
+
+                            <div class="breakdown-row subtotal-row">
+                                <span class="breakdown-label">Estimated Out-of-Pocket</span>
+                                <span class="breakdown-value">{plan.formattedEstimatedOOP}</span>
+                            </div>
+
+                            <!-- OOPM Cap -->
+                            <template lwc:if={plan.wasCapped}>
+                                <div class="breakdown-row capped-row">
+                                    <span class="breakdown-label">Capped at OOPM</span>
+                                    <span class="breakdown-value">{plan.formattedOopmCap}</span>
+                                </div>
+                            </template>
+
+                            <!-- Total Annual Cost -->
+                            <div class="breakdown-row effective-row">
+                                <span class="breakdown-label">Total Annual Cost</span>
+                                <span class="breakdown-value">{plan.formattedTotalAnnualCost}</span>
+                            </div>
+
+                            <!-- Cost Offset Analysis -->
+                            <template lwc:if={plan.hasOffsetData}>
+                                <div class="offset-divider">
+                                    <span class="offset-divider-label">Cost Offset Analysis</span>
+                                </div>
+
+                                <div class="breakdown-row offset-row offset-start-row">
+                                    <span class="breakdown-label">Total Annual Cost</span>
+                                    <span class="breakdown-value">{plan.formattedTotalAnnualCost}</span>
+                                </div>
+                                <template lwc:if={plan.showHsa}>
+                                    <div class="breakdown-row offset-row">
+                                        <span class="breakdown-label">HSA Funds Applied</span>
+                                        <span class="breakdown-value offset-applied">{plan.formattedNegHsa}</span>
+                                    </div>
+                                </template>
+                                <template lwc:if={plan.showEmployerHsa}>
+                                    <div class="breakdown-row highlight-row employer-row">
+                                        <span class="breakdown-label">Employer HSA (free money)</span>
+                                        <span class="breakdown-value savings-value">{plan.formattedNegEmployerHsa}</span>
+                                    </div>
+                                </template>
+                                <template lwc:if={plan.showLpfsa}>
+                                    <div class="breakdown-row offset-row">
+                                        <span class="breakdown-label">LP-FSA Funds Applied</span>
+                                        <span class="breakdown-value offset-applied">{plan.formattedNegLpfsa}</span>
+                                    </div>
+                                </template>
+                                <template lwc:if={plan.showFsa}>
+                                    <div class="breakdown-row offset-row">
+                                        <span class="breakdown-label">FSA Funds Applied</span>
+                                        <span class="breakdown-value offset-applied">{plan.formattedNegFsa}</span>
+                                    </div>
+                                </template>
+                                <template lwc:if={plan.hasTaxSavings}>
+                                    <div class="breakdown-row highlight-row">
+                                        <span class="breakdown-label">{plan.taxSavingsLabel}</span>
+                                        <span class="breakdown-value savings-value">{plan.formattedNegTaxSavings}</span>
+                                    </div>
+                                </template>
+
+                                <!-- Net Annual Cost -->
+                                <div class={plan.netCostClass}>
+                                    <span class="net-cost-label">Net Annual Cost</span>
+                                    <span class="net-cost-value">{plan.formattedNetAnnualCost}</span>
+                                    <template lwc:if={plan.isNegativeNet}>
+                                        <span class="net-negative-help">
+                                            💡 Negative = your offsets exceed estimated costs. You have leftover funds in your accounts.
+                                        </span>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+
+                    </div>
+                </template>
+            </div>
+
+            <!-- Methodology -->
+            <div class="methodology-note">
+                <lightning-icon icon-name="utility:info" size="xx-small" class="method-icon"></lightning-icon>
+                <div class="method-text">
+                    <p><strong>How this is calculated:</strong></p>
+                    <p>
+                        <strong>Copays</strong> are flat fees paid per visit/fill, counted toward your deductible and OOPM.<br/>
+                        <strong>Rx Deductible</strong> is paid first for prescriptions; Rx copays apply after it's met.<br/>
+                        <strong>Deductible</strong> — once your running OOP reaches the deductible, <strong>coinsurance</strong> kicks in on costs above it.<br/>
+                        <strong>OOPM</strong> — once reached, insurance pays 100% for the rest of the year.<br/>
+                        <strong>Total Annual Cost</strong> = Annual Premium + Capped Out-of-Pocket.<br/>
+                        <strong>Net Annual Cost</strong> = Total Annual Cost &minus; all offsets (HSA, Employer HSA, FSA/LP-FSA, tax savings).
+                    </p>
+                    <p class="method-note-secondary">
+                        <strong>Note:</strong> If a service has no copay entered (blank or $0), it is treated as $0 cost for that service.
+                        In reality, services without a fixed copay may be subject to deductible + coinsurance at the plan's allowed rate.
+                        For the most accurate estimate, enter the expected cost per visit for such services in the copay field.
+                        If both Individual and Family deductible/OOPM are provided, the Family value is used.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </template>
+</template>

@@ -1,0 +1,342 @@
+/* ===================================================================
+   planCompareBasic – Basic Mode Orchestrator Styles
+   =================================================================== */
+
+:host {
+    display: block;
+}
+
+/* ---------- Settings Bar ---------- */
+.settings-bar {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.settings-inner {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.settings-field {
+    min-width: 200px;
+}
+
+.tax-field {
+    flex: 1;
+    max-width: 280px;
+}
+
+.freq-field {
+    flex: 1;
+    max-width: 280px;
+}
+
+/* ---------- Validation Banner ---------- */
+.validation-banner {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.875rem 1.25rem;
+    background: #fef1ee;
+    border: 1px solid #f9c9be;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.error-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.error-list {
+    flex: 1;
+}
+
+.error-item {
+    margin: 0 0 0.25rem;
+    font-size: 0.825rem;
+    color: #8c1510;
+    line-height: 1.45;
+}
+
+.error-item:last-child {
+    margin-bottom: 0;
+}
+
+/* ---------- Plans Horizontal Scroll ---------- */
+.plans-scroll-container {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.plans-scroll {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.75rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar styling */
+.plans-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.plans-scroll::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.plans-scroll::-webkit-scrollbar-thumb {
+    background: #c9c7c5;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.plans-scroll::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
+}
+
+.plan-card-wrapper {
+    flex: 0 0 360px;
+    min-width: 360px;
+    scroll-snap-align: start;
+}
+
+.plan-card-wrapper c-plan-card {
+    width: 100%;
+}
+
+/* Scroll hint gradient overlay */
+.plans-scroll-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0.75rem;
+    width: 40px;
+    background: linear-gradient(to right, transparent, rgba(244, 246, 249, 0.85));
+    pointer-events: none;
+    border-radius: 0 12px 12px 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.plans-scroll-container.has-overflow::after {
+    opacity: 1;
+}
+
+.scroll-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.scroll-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    color: #969492;
+    user-select: none;
+}
+
+.scroll-hint-icon {
+    --sds-c-icon-color-foreground-default: #969492;
+}
+
+/* ---------- Add Plan Card ---------- */
+.add-plan-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 200px;
+    min-width: 200px;
+    min-height: 280px;
+    border: 2px dashed #c9c7c5;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #fafaf9;
+    scroll-snap-align: start;
+}
+
+.add-plan-card:hover {
+    border-color: #0176d3;
+    background: #f0f7ff;
+}
+
+.add-plan-card:focus {
+    outline: 2px solid #0176d3;
+    outline-offset: 2px;
+}
+
+.add-plan-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-icon {
+    --sds-c-icon-color-foreground-default: #c9c7c5;
+    transition: all 0.2s ease;
+}
+
+.add-plan-card:hover .add-icon {
+    --sds-c-icon-color-foreground-default: #0176d3;
+}
+
+.add-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #706e6b;
+    transition: color 0.2s ease;
+}
+
+.add-plan-card:hover .add-label {
+    color: #0176d3;
+}
+
+.add-sublabel {
+    font-size: 0.75rem;
+    color: #969492;
+}
+
+/* ---------- Action Bar ---------- */
+.action-bar {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    margin-bottom: 1.5rem;
+}
+
+.action-btn lightning-button {
+    --sds-c-button-radius-border: 8px;
+}
+
+/* ---------- Save Modal ---------- */
+.save-modal .slds-modal__container {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.modal-content {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header-custom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 2rem 2rem 1rem;
+}
+
+.modal-success-icon {
+    --sds-c-icon-color-foreground-default: #2e844a;
+}
+
+.modal-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #181818;
+    margin: 0;
+}
+
+.modal-body-custom {
+    padding: 0 2rem 1.5rem;
+    text-align: center;
+}
+
+.modal-instruction {
+    font-size: 0.875rem;
+    color: #706e6b;
+    margin: 0 0 1rem;
+}
+
+.modal-id-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #f4f6f9;
+    border: 2px dashed #0176d3;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.modal-id-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #0176d3;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.modal-copy-btn {
+    --sds-c-button-icon-color-foreground: #706e6b;
+}
+
+.copy-toast {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.2rem 0.6rem;
+    background: #2e844a;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 4px;
+    animation: fadeInOut 2s ease forwards;
+}
+
+@keyframes fadeInOut {
+    0%   { opacity: 0; transform: translateY(2px); }
+    15%  { opacity: 1; transform: translateY(0); }
+    75%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.modal-note {
+    font-size: 0.78rem;
+    color: #969492;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.modal-footer-custom {
+    display: flex;
+    justify-content: center;
+    padding: 0 2rem 1.5rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .plan-card-wrapper {
+        flex: 0 0 300px;
+        min-width: 300px;
+    }
+    .add-plan-card {
+        flex: 0 0 160px;
+        min-width: 160px;
+    }
+    .settings-inner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .settings-field {
+        min-width: 100%;
+    }
+}

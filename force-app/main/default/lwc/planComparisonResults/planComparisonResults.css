@@ -1,0 +1,433 @@
+/* ===================================================================
+   planComparisonResults – Results Display Styles
+   =================================================================== */
+
+:host {
+    display: block;
+}
+
+.results-container {
+    margin-top: 0.5rem;
+}
+
+/* ---------- Section Header ---------- */
+.results-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.results-header-icon {
+    --sds-c-icon-color-foreground-default: #0176d3;
+}
+
+.results-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #181818;
+    margin: 0;
+}
+
+/* ---------- Winner Banner ---------- */
+.winner-banner {
+    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+    border: 1px solid #a5d6a7;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.winner-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.winner-trophy {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.winner-headline {
+    margin: 0 0 0.25rem;
+    font-size: 1.05rem;
+    color: #1b5e20;
+}
+
+.winner-detail {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #2e7d32;
+}
+
+/* ---------- Results Grid ---------- */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ---------- Result Card ---------- */
+.result-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+    transition: box-shadow 0.2s ease;
+}
+
+.result-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+}
+
+.result-card.cheapest {
+    border-color: #2e7d32;
+    border-width: 2px;
+    box-shadow: 0 4px 20px rgba(46, 125, 50, 0.12);
+}
+
+/* ---------- Rank Badge ---------- */
+.rank-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: #f4f6f9;
+    color: #706e6b;
+    margin-bottom: 0.75rem;
+}
+
+.cheapest-badge {
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+/* ---------- Plan Header ---------- */
+.result-plan-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.result-plan-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #181818;
+    margin: 0;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.plan-type-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.plan-type-badge.hdhp {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.plan-type-badge.non-hdhp {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+/* ---------- Big Number ---------- */
+.big-number-section {
+    text-align: center;
+    padding: 1rem 0;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.big-number-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #706e6b;
+    margin-bottom: 0.35rem;
+}
+
+.big-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #181818;
+    letter-spacing: -0.02em;
+}
+
+.cheapest .big-number {
+    color: #2e7d32;
+}
+
+/* ---------- Breakdown Rows ---------- */
+.breakdown-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3rem 0;
+}
+
+.breakdown-label {
+    font-size: 0.825rem;
+    color: #444746;
+}
+
+.breakdown-value {
+    font-size: 0.825rem;
+    font-weight: 600;
+    color: #181818;
+    text-align: right;
+}
+
+.subtotal-row {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 0.5rem;
+    margin-top: 0.15rem;
+}
+
+.subtotal-row .breakdown-label,
+.subtotal-row .breakdown-value {
+    font-weight: 700;
+}
+
+.effective-row {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 0.6rem;
+    margin-top: 0.3rem;
+}
+
+.effective-row .breakdown-label,
+.effective-row .breakdown-value {
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: #181818;
+}
+
+.breakdown-divider {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 0.35rem 0;
+}
+
+.highlight-row {
+    background: #f0faf0;
+    margin: 0.25rem -0.5rem 0;
+    padding: 0.5rem 0.5rem;
+    border-radius: 6px;
+}
+
+.highlight-row .breakdown-label {
+    font-weight: 600;
+    color: #2e7d32;
+}
+
+.employer-row {
+    background: #e3f2fd;
+}
+
+.employer-row .breakdown-label {
+    color: #1565c0;
+}
+
+.employer-row .savings-value {
+    color: #1565c0 !important;
+}
+
+.savings-value {
+    color: #2e7d32 !important;
+    font-weight: 700 !important;
+}
+
+/* ---------- Cost Offset Analysis ---------- */
+.offset-divider {
+    position: relative;
+    text-align: center;
+    margin: 0.75rem -0.5rem 0.35rem;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 0.5rem;
+}
+
+.offset-divider-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #0d47a1;
+    background: #ffffff;
+    padding: 0 0.5rem;
+}
+
+.offset-row .breakdown-label {
+    font-size: 0.8rem;
+    color: #546e7a;
+}
+
+.offset-row .breakdown-value {
+    font-size: 0.8rem;
+}
+
+.offset-start-row {
+    padding-bottom: 0.35rem;
+    margin-bottom: 0.1rem;
+}
+
+.offset-start-row .breakdown-label,
+.offset-start-row .breakdown-value {
+    font-weight: 700;
+    color: #181818;
+    font-size: 0.85rem;
+}
+
+.offset-applied {
+    color: #2e7d32 !important;
+    font-weight: 700;
+}
+
+.leftover-row {
+    background: #fff8e1;
+    margin: 0.25rem -0.5rem 0;
+    padding: 0.45rem 0.5rem;
+    border-radius: 6px;
+}
+
+.leftover-row .breakdown-label {
+    font-weight: 600;
+    color: #e65100;
+}
+
+.leftover-value {
+    color: #e65100 !important;
+    font-weight: 700 !important;
+}
+
+.leftover-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+    margin: 0.35rem 0 0;
+    padding: 0.35rem 0.4rem;
+    background: #fffde7;
+    border-radius: 4px;
+}
+
+.tip-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+    --sds-c-icon-color-foreground-default: #e65100;
+}
+
+.tip-text {
+    font-size: 0.7rem;
+    color: #795548;
+    line-height: 1.45;
+}
+
+/* ---------- Net Annual Cost ---------- */
+.net-cost-section {
+    text-align: center;
+    padding: 0.75rem 0 0.25rem;
+    margin-top: 0.65rem;
+    border-top: 2px solid #0d47a1;
+}
+
+.net-cost-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #0d47a1;
+    margin-bottom: 0.25rem;
+}
+
+.net-cost-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0d47a1;
+    letter-spacing: -0.02em;
+}
+
+.cheapest .net-cost-value {
+    color: #1b5e20;
+}
+
+.net-negative .net-cost-label {
+    color: #2e7d32;
+}
+
+.net-negative .net-cost-value {
+    color: #2e7d32;
+}
+
+.net-negative-help {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: #2e7d32;
+    line-height: 1.45;
+    margin-top: 0.4rem;
+    padding: 0.35rem 0.5rem;
+    background: #f0faf0;
+    border-radius: 6px;
+}
+
+/* ---------- Methodology Note ---------- */
+.methodology-note {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.875rem 1.25rem;
+    background: #f8f9fb;
+    border-radius: 10px;
+    border: 1px solid #e5e5e5;
+}
+
+.method-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+    --sds-c-icon-color-foreground-default: #706e6b;
+}
+
+.method-text {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #706e6b;
+    line-height: 1.55;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+    .winner-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}

@@ -1,0 +1,303 @@
+<template>
+    <div class="plan-card">
+
+        <!-- Card Header -->
+        <div class="card-header">
+            <div class="card-header-left">
+                <span class="plan-badge">{planNumber}</span>
+                <h3 class="plan-title">{planLabel}</h3>
+            </div>
+            <template lwc:if={canRemove}>
+                <button class="remove-btn" title={removeButtonTitle}
+                        onclick={handleRemove}>
+                    <lightning-icon icon-name="utility:close" size="x-small"
+                                    alternative-text="Remove plan"></lightning-icon>
+                </button>
+            </template>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body">
+
+            <!-- Plan Name -->
+            <div class="field-group">
+                <lightning-input
+                    type="text"
+                    label="Plan Name"
+                    value={planNameValue}
+                    data-field="name"
+                    placeholder="e.g. Blue Cross PPO"
+                    required
+                    onchange={handleFieldChange}
+                    message-when-value-missing="Please enter a plan name">
+                </lightning-input>
+            </div>
+
+            <!-- HDHP Toggle + Premium Row -->
+            <div class="field-row two-col">
+                <div class="field-group hdhp-toggle">
+                    <lightning-radio-group
+                        name={hdhpGroupName}
+                        label="HDHP?"
+                        options={hdhpOptions}
+                        value={hdhpValue}
+                        type="button"
+                        data-field="isHDHP"
+                        onchange={handleFieldChange}>
+                    </lightning-radio-group>
+                </div>
+                <div class="field-group">
+                    <lightning-input
+                        type="number"
+                        label={premiumLabel}
+                        value={premiumValue}
+                        data-field="premium"
+                        min="0"
+                        step="0.01"
+                        formatter="currency"
+                        required
+                        placeholder="0.00"
+                        onchange={handleFieldChange}
+                        message-when-value-missing="Premium is required"
+                        message-when-range-underflow="Cannot be negative">
+                    </lightning-input>
+                </div>
+            </div>
+
+            <!-- ========== SECTION 1: Cost Sharing ========== -->
+            <div class="collapsible-section">
+                <button class="section-header-btn" onclick={toggleCostSharing}>
+                    <lightning-icon icon-name={costSharingIcon} size="xx-small" class="section-chevron"></lightning-icon>
+                    <span class="section-header-label">Deductibles &amp; Cost Sharing</span>
+                </button>
+                <template lwc:if={showCostSharing}>
+                    <div class="section-content">
+                        <div class="field-row two-col">
+                            <div class="field-group">
+                                <lightning-input type="number" label="Deductible ($)"
+                                    value={deductibleValue} data-field="deductible"
+                                    min="0" step="0.01" formatter="currency" placeholder="0.00"
+                                    onchange={handleFieldChange}
+                                    field-level-help="Annual deductible you must pay before insurance covers costs. Enter your individual or family deductible — whichever applies.">
+                                </lightning-input>
+                            </div>
+                            <div class="field-group">
+                                <lightning-input type="number" label="Out-of-Pocket Max ($)"
+                                    value={oopmValue} data-field="oopm"
+                                    min="0" step="0.01" formatter="currency" required placeholder="0.00"
+                                    onchange={handleFieldChange}
+                                    field-level-help="Maximum you pay out-of-pocket in a year. Enter your individual or family OOPM — whichever applies."
+                                    message-when-value-missing="Out-of-Pocket Max is required">
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <div class="field-row single-col">
+                            <div class="field-group">
+                                <lightning-input type="number" label="Coinsurance (%)"
+                                    value={coinsuranceValue} data-field="coinsurance"
+                                    min="0" max="100" step="1" placeholder="e.g. 20"
+                                    onchange={handleFieldChange}
+                                    field-level-help="Your share of costs after deductible (e.g. 20 means you pay 20%, plan pays 80%).">
+                                </lightning-input>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- ========== SECTION 2: Tax-Advantaged Accounts ========== -->
+            <div class="collapsible-section">
+                <button class="section-header-btn" onclick={toggleAccounts}>
+                    <lightning-icon icon-name={accountsIcon} size="xx-small" class="section-chevron"></lightning-icon>
+                    <span class="section-header-label">Tax-Advantaged Accounts</span>
+                </button>
+                <template lwc:if={showAccounts}>
+                    <div class="section-content">
+                        <template lwc:if={isHDHP}>
+                            <div class="field-row two-col">
+                                <div class="field-group">
+                                    <lightning-input type="number" label="HSA Contribution ($)"
+                                        value={hsaValue} data-field="hsa" min="0" step="0.01"
+                                        formatter="currency" placeholder="0.00" onchange={handleFieldChange}
+                                        field-level-help="Your annual HSA contribution.">
+                                    </lightning-input>
+                                </div>
+                                <div class="field-group">
+                                    <lightning-input type="number" label="Employer HSA ($)"
+                                        value={employerHsaValue} data-field="employerHsa" min="0" step="0.01"
+                                        formatter="currency" placeholder="0.00" onchange={handleFieldChange}
+                                        field-level-help="Annual employer contribution to your HSA.">
+                                    </lightning-input>
+                                </div>
+                            </div>
+                            <div class="field-row single-col">
+                                <div class="field-group">
+                                    <lightning-input type="number" label="LP-FSA Contribution ($)"
+                                        value={lpfsaValue} data-field="lpfsa" min="0" step="0.01"
+                                        formatter="currency" placeholder="0.00" onchange={handleFieldChange}
+                                        field-level-help="Limited Purpose FSA — dental & vision only with HDHP.">
+                                    </lightning-input>
+                                </div>
+                            </div>
+                        </template>
+                        <template lwc:if={isNotHDHP}>
+                            <div class="field-row single-col">
+                                <div class="field-group">
+                                    <lightning-input type="number" label="FSA Contribution ($)"
+                                        value={fsaValue} data-field="fsa" min="0" step="0.01"
+                                        formatter="currency" placeholder="0.00" onchange={handleFieldChange}
+                                        field-level-help="Flexible Spending Account — pre-tax for medical, dental & vision.">
+                                    </lightning-input>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </div>
+
+            <!-- ========== SECTION 3: Medical Service Copays ========== -->
+            <div class="collapsible-section">
+                <button class="section-header-btn" onclick={toggleMedical}>
+                    <lightning-icon icon-name={medicalIcon} size="xx-small" class="section-chevron"></lightning-icon>
+                    <span class="section-header-label">Medical Service Copays ($)</span>
+                </button>
+                <template lwc:if={showMedical}>
+                    <div class="section-content">
+                        <p class="section-hint">Enter the fixed copay for each service. If a service has no copay (subject to deductible + coinsurance instead), enter the estimated allowed cost per visit, or leave blank for $0.</p>
+                        <div class="field-row two-col">
+                            <div class="field-group">
+                                <lightning-input type="number" label="PCP Visit"
+                                    value={pcpVisitValue} data-field="pcpVisit" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                            <div class="field-group">
+                                <lightning-input type="number" label="Specialist Visit"
+                                    value={specialistVisitValue} data-field="specialistVisit" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <div class="field-row two-col">
+                            <div class="field-group">
+                                <lightning-input type="number" label="Urgent Care"
+                                    value={urgentCareValue} data-field="urgentCare" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                            <div class="field-group">
+                                <lightning-input type="number" label="Emergency Room"
+                                    value={emergencyRoomValue} data-field="emergencyRoom" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <div class="field-row two-col">
+                            <div class="field-group">
+                                <lightning-input type="number" label="Virtual Primary Care"
+                                    value={virtualPrimaryCareValue} data-field="virtualPrimaryCare" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                            <div class="field-group">
+                                <lightning-input type="number" label="Virtual Urgent Care"
+                                    value={virtualUrgentCareValue} data-field="virtualUrgentCare" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <div class="field-row two-col">
+                            <div class="field-group">
+                                <lightning-input type="number" label="Preventive Care"
+                                    value={preventiveCareValue} data-field="preventiveCare" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}
+                                    field-level-help="Usually $0 under ACA for in-network preventive services.">
+                                </lightning-input>
+                            </div>
+                            <div class="field-group">
+                                <lightning-input type="number" label="Prenatal Care"
+                                    value={prenatalCareValue} data-field="prenatalCare" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <div class="field-row two-col">
+                            <div class="field-group">
+                                <lightning-input type="number" label="Mental Health Visit"
+                                    value={mentalHealthVisitValue} data-field="mentalHealthVisit" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                            <div class="field-group">
+                                <lightning-input type="number" label="X-Ray / Lab Work"
+                                    value={xrayLabWorkValue} data-field="xrayLabWork" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <div class="field-row single-col">
+                            <div class="field-group">
+                                <lightning-input type="number" label="Inpatient (per day/admission)"
+                                    value={inpatientValue} data-field="inpatient" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}
+                                    field-level-help="Your copay for hospital inpatient stay per admission.">
+                                </lightning-input>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- ========== SECTION 4: Prescription Drugs ========== -->
+            <div class="collapsible-section">
+                <button class="section-header-btn" onclick={togglePrescription}>
+                    <lightning-icon icon-name={prescriptionIcon} size="xx-small" class="section-chevron"></lightning-icon>
+                    <span class="section-header-label">Prescription Drug Costs ($)</span>
+                </button>
+                <template lwc:if={showPrescription}>
+                    <div class="section-content">
+                        <p class="section-hint">Rx Deductible is paid first (full drug prices). After it's met, you pay the copay amounts below per fill.</p>
+                        <div class="field-row single-col">
+                            <div class="field-group">
+                                <lightning-input type="number" label="Rx Deductible (annual)"
+                                    value={rxDeductibleValue} data-field="rxDeductible" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}
+                                    field-level-help="Separate annual Rx deductible you must pay before Rx copays apply. You pay full drug prices until this amount is met.">
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <div class="field-row two-col">
+                            <div class="field-group">
+                                <lightning-input type="number" label="Generic Drug (per fill)"
+                                    value={genericDrugValue} data-field="genericDrug" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                            <div class="field-group">
+                                <lightning-input type="number" label="Preferred Drug (per fill)"
+                                    value={preferredDrugValue} data-field="preferredDrug" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <div class="field-row two-col">
+                            <div class="field-group">
+                                <lightning-input type="number" label="Non-Preferred Drug (per fill)"
+                                    value={nonPreferredDrugValue} data-field="nonPreferredDrug" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                            <div class="field-group">
+                                <lightning-input type="number" label="Specialty Drug (per fill)"
+                                    value={specialtyDrugValue} data-field="specialtyDrug" min="0" step="0.01"
+                                    formatter="currency" placeholder="0.00" onchange={handleFieldChange}>
+                                </lightning-input>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+        </div>
+    </div>
+</template>

@@ -1,0 +1,165 @@
+<template>
+    <div class="plan-card">
+
+        <!-- Card Header -->
+        <div class="card-header">
+            <div class="card-header-left">
+                <span class="plan-badge">{planNumber}</span>
+                <h3 class="plan-title">{planLabel}</h3>
+            </div>
+            <template lwc:if={canRemove}>
+                <button class="remove-btn" title={removeButtonTitle}
+                        onclick={handleRemove}>
+                    <lightning-icon icon-name="utility:close" size="x-small"
+                                    alternative-text="Remove plan"></lightning-icon>
+                </button>
+            </template>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body">
+
+            <!-- Plan Name -->
+            <div class="field-group">
+                <lightning-input
+                    type="text"
+                    label="Plan Name"
+                    value={planNameValue}
+                    data-field="name"
+                    placeholder="e.g. Blue Cross PPO"
+                    required
+                    onchange={handleFieldChange}
+                    message-when-value-missing="Please enter a plan name">
+                </lightning-input>
+            </div>
+
+            <!-- HDHP Toggle -->
+            <div class="field-group hdhp-toggle">
+                <lightning-radio-group
+                    name={hdhpGroupName}
+                    label="Is this a High Deductible Health Plan (HDHP)?"
+                    options={hdhpOptions}
+                    value={hdhpValue}
+                    type="button"
+                    data-field="isHDHP"
+                    onchange={handleFieldChange}>
+                </lightning-radio-group>
+            </div>
+
+            <!-- Premium & OOPM Row -->
+            <div class="field-row two-col">
+                <div class="field-group">
+                    <lightning-input
+                        type="number"
+                        label={premiumLabel}
+                        value={premiumValue}
+                        data-field="premium"
+                        min="0"
+                        step="0.01"
+                        formatter="currency"
+                        required
+                        placeholder="0.00"
+                        onchange={handleFieldChange}
+                        message-when-value-missing="Premium is required"
+                        message-when-range-underflow="Premium cannot be negative">
+                    </lightning-input>
+                </div>
+                <div class="field-group">
+                    <lightning-input
+                        type="number"
+                        label="OOPM ($)"
+                        value={oopmValue}
+                        data-field="oopm"
+                        min="0"
+                        step="0.01"
+                        formatter="currency"
+                        required
+                        placeholder="0.00"
+                        onchange={handleFieldChange}
+                        field-level-help="Out-of-Pocket Maximum — the most you pay in a year before the plan covers 100%."
+                        message-when-value-missing="Out-of-Pocket Max is required"
+                        message-when-range-underflow="Value cannot be negative">
+                    </lightning-input>
+                </div>
+            </div>
+
+            <!-- Tax-Advantaged Accounts Section -->
+            <div class="accounts-section">
+                <div class="section-divider">
+                    <span class="section-label">Tax-Advantaged Accounts</span>
+                </div>
+
+                <!-- HDHP Accounts: HSA + LP-FSA -->
+                <template lwc:if={isHDHP}>
+                    <div class="field-row two-col">
+                        <div class="field-group">
+                            <lightning-input
+                                type="number"
+                                label="HSA Annual Contribution ($)"
+                                value={hsaValue}
+                                data-field="hsa"
+                                min="0"
+                                step="0.01"
+                                formatter="currency"
+                                placeholder="0.00"
+                                onchange={handleFieldChange}
+                                field-level-help="Health Savings Account — your pre-tax contributions reduce your taxable income">
+                            </lightning-input>
+                        </div>
+                        <div class="field-group">
+                            <lightning-input
+                                type="number"
+                                label="Employer HSA Contribution ($)"
+                                value={employerHsaValue}
+                                data-field="employerHsa"
+                                min="0"
+                                step="0.01"
+                                formatter="currency"
+                                placeholder="0.00"
+                                onchange={handleFieldChange}
+                                field-level-help="Annual amount your employer contributes to your HSA">
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <div class="field-row single-col">
+                        <div class="field-group">
+                            <lightning-input
+                                type="number"
+                                label="LP-FSA Annual Contribution ($)"
+                                value={lpfsaValue}
+                                data-field="lpfsa"
+                                min="0"
+                                step="0.01"
+                                formatter="currency"
+                                placeholder="0.00"
+                                onchange={handleFieldChange}
+                                field-level-help="Limited Purpose FSA — covers dental & vision expenses only with HDHP">
+                            </lightning-input>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Non-HDHP Account: FSA -->
+                <template lwc:if={isNotHDHP}>
+                    <div class="field-row single-col">
+                        <div class="field-group">
+                            <lightning-input
+                                type="number"
+                                label="FSA Annual Contribution ($)"
+                                value={fsaValue}
+                                data-field="fsa"
+                                min="0"
+                                step="0.01"
+                                formatter="currency"
+                                placeholder="0.00"
+                                onchange={handleFieldChange}
+                                field-level-help="Flexible Spending Account — pre-tax contributions for medical, dental & vision expenses">
+                            </lightning-input>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+        </div>
+    </div>
+</template>

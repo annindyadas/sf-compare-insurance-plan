@@ -1,0 +1,102 @@
+<template>
+    <div class="app-container">
+
+        <!-- Header -->
+        <div class="app-header">
+            <div class="header-content">
+                <lightning-icon icon-name="standard:knowledge" size="large" class="header-icon"></lightning-icon>
+                <div class="header-text">
+                    <h1 class="slds-text-heading_large header-title">Health Insurance Plan Compare</h1>
+                    <p class="slds-text-body_regular header-subtitle">Find the most cost-effective health insurance plan for you</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="mode-section">
+            <div class="mode-card">
+                <div class="mode-toggle-centered">
+                    <lightning-radio-group
+                        name="comparisonMode"
+                        options={modeOptions}
+                        value={selectedMode}
+                        type="button"
+                        onchange={handleModeChange}
+                        class="mode-radio">
+                    </lightning-radio-group>
+                </div>
+                <p class="mode-description">{modeDescription}</p>
+            </div>
+        </div>
+
+        <!-- Retrieve Saved Comparison -->
+        <div class="retrieve-bar">
+            <div class="retrieve-header">
+                <lightning-icon icon-name="utility:upload" size="small" class="retrieve-header-icon"></lightning-icon>
+                <div class="retrieve-header-text">
+                    <h2 class="retrieve-title">Have a saved comparison?</h2>
+                    <p class="retrieve-subtitle">Enter the 6-character Comparison ID you received when you saved — it will reload all your plan details and settings.</p>
+                </div>
+            </div>
+            <div class="retrieve-action-row">
+                <div class="retrieve-input-wrap">
+                    <lightning-input
+                        type="text"
+                        label="Comparison ID"
+                        value={retrieveId}
+                        placeholder="e.g. A3X9K2"
+                        onchange={handleRetrieveIdChange}
+                        variant="label-hidden"
+                        class="retrieve-input"
+                        maxlength="6">
+                    </lightning-input>
+                </div>
+                <lightning-button
+                    label="Load Comparison"
+                    variant="brand"
+                    icon-name="utility:download"
+                    onclick={handleRetrieve}
+                    disabled={isRetrieving}
+                    class="retrieve-btn">
+                </lightning-button>
+            </div>
+            <template lwc:if={hasRetrieveError}>
+                <p class="retrieve-error">
+                    <lightning-icon icon-name="utility:error" size="xx-small" class="retrieve-error-icon"></lightning-icon>
+                    {retrieveError}
+                </p>
+            </template>
+        </div>
+
+        <!-- Mode-specific content -->
+        <div class="mode-content">
+            <template lwc:if={isBasicMode}>
+                <c-plan-compare-basic></c-plan-compare-basic>
+            </template>
+
+            <template lwc:if={isAdvancedMode}>
+                <c-plan-compare-advanced></c-plan-compare-advanced>
+            </template>
+        </div>
+
+        <!-- Footer -->
+        <div class="app-footer">
+            <p class="slds-text-body_small footer-text">
+                <lightning-icon icon-name="utility:info_alt" size="xx-small" class="footer-icon"></lightning-icon>
+                This calculator provides estimates only. Actual costs may vary based on your specific healthcare usage. Consult your plan documents for exact details.
+            </p>
+            <p class="slds-text-body_small footer-text footer-privacy">
+                <lightning-icon icon-name="utility:lock" size="xx-small" class="footer-icon"></lightning-icon>
+                We do not store any PII (Personally Identifiable Information). Only your health insurance plan details are saved if you choose to save, and this tool is completely free to use.
+            </p>
+            <div class="footer-bottom">
+                <p class="footer-credit">
+                    Built by <a href="https://annindyadas.my.site.com/portfolio/" target="_blank" rel="noopener noreferrer" class="footer-link">Annindya Das</a> · Helping people make smarter healthcare decisions.
+                </p>
+                <p class="footer-copyright">
+                    © {currentYear} Annindya Das. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
