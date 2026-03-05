@@ -47,9 +47,15 @@ force-app/main/default/
 │   ├── PlanComparisonController.cls-meta.xml
 │   ├── PlanComparisonControllerTest.cls   # Test class (5 test methods)
 │   └── PlanComparisonControllerTest.cls-meta.xml
+├── layouts/
+│   ├── Plan_Comparison__c-Plan Comparison Layout.layout-meta.xml
+│   └── Plan_Detail__c-Plan Detail Layout.layout-meta.xml
+├── tabs/
+│   └── Plan_Comparison__c.tab-meta.xml
 └── objects/
     ├── Plan_Comparison__c/     # Parent object – comparison metadata + usage fields
-    │   └── fields/             # 19 custom fields
+    │   ├── fields/             # 19 custom fields
+    │   └── listViews/          # All records list view
     └── Plan_Detail__c/         # Child object – individual plan data
         └── fields/             # 26 custom fields
 ```
@@ -68,8 +74,8 @@ force-app/main/default/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/annindyadas/salesforce-compare-insurance-plan.git
-   cd salesforce-compare-insurance-plan
+   git clone https://github.com/annindyadas/sf-compare-insurance-plan.git
+   cd sf-compare-insurance-plan
    ```
 
 2. **Authorize your org**
