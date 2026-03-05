@@ -2,6 +2,8 @@
 
 A free, open-source **Salesforce LWC application** that helps users compare health insurance plans side-by-side to find the most cost-effective option. Built for deployment on **Salesforce LWR Experience Sites**.
 
+[![Try Now](https://img.shields.io/badge/🚀_Try_Now-Live_Demo-0176d3?style=for-the-badge)](https://annindyadas.my.site.com/compareplan/)
+
 ![Salesforce](https://img.shields.io/badge/Salesforce-LWC-00A1E0?logo=salesforce&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
