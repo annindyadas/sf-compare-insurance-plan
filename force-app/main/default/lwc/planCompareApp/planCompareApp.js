@@ -43,7 +43,7 @@ export default class PlanCompareApp extends LightningElement {
     }
 
     handleRetrieveIdChange(event) {
-        this.retrieveId = event.detail.value;
+        this.retrieveId = event.target.value;
         this.retrieveError = '';
     }
 

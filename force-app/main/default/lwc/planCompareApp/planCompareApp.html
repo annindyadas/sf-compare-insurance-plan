@@ -40,25 +40,24 @@
             </div>
             <div class="retrieve-action-row">
                 <div class="retrieve-input-wrap">
-                    <lightning-input
+                    <input
                         type="text"
-                        label="Comparison ID"
                         value={retrieveId}
                         placeholder="e.g. A3X9K2"
-                        onchange={handleRetrieveIdChange}
-                        variant="label-hidden"
-                        class="retrieve-input"
-                        maxlength="6">
-                    </lightning-input>
+                        oninput={handleRetrieveIdChange}
+                        class="retrieve-input slds-input"
+                        maxlength="6" />
                 </div>
-                <lightning-button
-                    label="Load Comparison"
-                    variant="brand"
-                    icon-name="utility:download"
-                    onclick={handleRetrieve}
-                    disabled={isRetrieving}
-                    class="retrieve-btn">
-                </lightning-button>
+                <div class="retrieve-btn-wrap">
+                    <lightning-button
+                        label="Load Comparison"
+                        variant="brand"
+                        icon-name="utility:download"
+                        onclick={handleRetrieve}
+                        disabled={isRetrieving}
+                        class="retrieve-btn">
+                    </lightning-button>
+                </div>
             </div>
             <template lwc:if={hasRetrieveError}>
                 <p class="retrieve-error">

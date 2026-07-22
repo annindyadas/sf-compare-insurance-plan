@@ -144,7 +144,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    align-items: flex-end;
+    align-items: center;
     gap: 0.625rem;
     padding-left: 2.25rem; /* align with text after icon */
 }
@@ -155,12 +155,16 @@
 }
 
 .retrieve-input {
-    display: inline-block;
     width: 100%;
+    height: 32px;
+    text-transform: uppercase;
+}
+
+.retrieve-btn-wrap {
+    flex: 0 0 auto;
 }
 
 .retrieve-btn {
-    flex: 0 0 auto;
     white-space: nowrap;
 }
 
